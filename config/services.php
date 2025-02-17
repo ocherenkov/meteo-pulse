@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'weatherapi' => [
+        'key' => env('WEATHER_API_KEY'),
+        'url' => env('WEATHER_API_URL'),
+    ],
+
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN')
+    ],
 ];
