@@ -42,6 +42,7 @@ class ProfileController extends Controller
             'preferences' => $this->userPreferenceService->getUserPreferences($user),
             'channels' => $this->notificationChannelService->getUserChannels($user),
             'weatherData' => $this->weatherService->getWeatherForUserPreferences($user),
+            'notificationPause' => $this->notificationPauseService->getRemainingPauseTime($user),
         ]);
     }
 

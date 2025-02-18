@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\LoginUserDTO;
 use App\DTO\RegisterUserDTO;
 use App\Enums\NotificationChannelType;
+use App\Exceptions\WeatherApiException;
 use App\Models\User;
 use App\Repositories\NotificationChannelRepository;
 use App\Repositories\UserPreferenceRepository;
@@ -23,6 +24,13 @@ readonly class AuthService
     ) {
     }
 
+    /**
+     * Registers a new user in the system.
+     *
+     * @param RegisterUserDTO $dto Data for the new user.
+     * @return User The newly created user.
+     * @throws ValidationException|WeatherApiException If the email is already taken.
+     */
     public function register(RegisterUserDTO $dto): User
     {
         if ($this->userRepository->findByEmail($dto->email)) {
@@ -46,6 +54,13 @@ readonly class AuthService
         return $user;
     }
 
+    /**
+     * Login a user into the application.
+     *
+     * @param LoginUserDTO $dto
+     * @return bool
+     * @throws ValidationException
+     */
     public function login(LoginUserDTO $dto): bool
     {
         if (!Auth::attempt(['email' => $dto->email, 'password' => $dto->password], $dto->remember)) {
@@ -55,6 +70,11 @@ readonly class AuthService
         return true;
     }
 
+    /**
+     * Log the user out of the application.
+     *
+     * @return void
+     */
     public function logout(): void
     {
         Auth::logout();

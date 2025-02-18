@@ -14,7 +14,7 @@ class NotificationChannelRepository
         return NotificationChannel::query()->where('user_id', $user->id)->get(['channel', 'value']);
     }
 
-    public function upsertChannel(User $user, NotificationChannelType $channel, string $value)
+    public function upsertChannel(User $user, NotificationChannelType $channel, string $value): ?NotificationChannel
     {
         return NotificationChannel::query()->updateOrCreate(
             [
@@ -27,13 +27,19 @@ class NotificationChannelRepository
         );
     }
 
-    public function removeChannel(User $user, NotificationChannelType $channel)
+    public function removeChannel(User $user, NotificationChannelType $channel): int|false
     {
-        // Must have at least one channel
-        if (NotificationChannel::query()->where('user_id', $user->id)->count() <= 1) {
+        if ($this->hasOnlyOneChannel($user)) {
             return false;
         }
 
-        return NotificationChannel::query()->where('user_id', $user->id)->where('channel', $channel)->delete();
+        return $user->notificationChannels()
+            ->where('channel', $channel)
+            ->delete();
+    }
+
+    private function hasOnlyOneChannel(User $user): bool
+    {
+        return $user->notificationChannels()->count() <= 1;
     }
 }

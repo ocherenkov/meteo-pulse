@@ -24,12 +24,13 @@
                 </ul>
 
                 <h4>{{ __('messages.profile.titles.notification_control') }}</h4>
-                @if (auth()->user()->notifications_paused_until)
+                @if ($notificationPause)
                     <div class="alert alert-info">
-                        {{ __('messages.profile.messages.notifications_paused_until', ['time' => auth()->user()->notifications_paused_until->format('H:i')]) }}
+                        {{ __('messages.profile.messages.notifications_paused_until', ['time' => $notificationPause]) }}
                         <form action="{{ route('profile.resume-notifications') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-link p-0 ms-2">{{ __('messages.profile.buttons.resume') }}</button>
+                            <button type="submit"
+                                    class="btn btn-link p-0 ms-2">{{ __('messages.profile.buttons.resume') }}</button>
                         </form>
                     </div>
                 @else
@@ -38,7 +39,8 @@
                         <div class="input-group mb-3">
                             <input type="number" name="hours" class="form-control" min="1" max="24" value="2">
                             <span class="input-group-text">hours</span>
-                            <button type="submit" class="btn btn-warning">{{ __('messages.profile.buttons.pause') }}</button>
+                            <button type="submit"
+                                    class="btn btn-warning">{{ __('messages.profile.buttons.pause') }}</button>
                         </div>
                     </form>
                 @endif

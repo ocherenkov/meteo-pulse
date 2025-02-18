@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\User;
 use App\Models\UserPreference;
 use App\Models\WeatherData;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -94,7 +95,7 @@ readonly class WeatherService
                 'error' => $e->getMessage()
             ]);
             throw $e;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Unexpected error while fetching weather data', [
                 'city_id' => $cityId,
                 'city_name' => $city->name,
