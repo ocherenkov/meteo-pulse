@@ -20,5 +20,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('weather:update')->hourly();
+        $schedule->command('weather:notify')->hourly();
     })
     ->create();
